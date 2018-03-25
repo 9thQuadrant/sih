@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html ng-app="teleMed">
+    <head>
+        <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' data: gap: * ; style-src 'self' 'unsafe-inline'; media-src * blob:; img-src * android-webview-video-poster:;script-src 'self' *; object-src 'self'">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/w3.min.css" async defer/>
+        <!-- <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/> -->
+        <link rel="stylesheet" type="text/css" href="css/icons.css" async defer/>
+        <link rel="stylesheet" type="text/css" href="css/materialize.min.css" async defer/>
+        <link rel="stylesheet" type="text/css" href="css/index.css" async defer/>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/angular-route.min.js"></script>
+        <script type="text/javascript" src="js/angular-animate.min.js"></script>
+        <script type="text/javascript" src="js/angular-swipe.js"></script>
+        <script type="text/javascript" src="js/socket.io.min.js"></script>
+        <script type="text/javascript" src="js/socket.min.js"></script>
+        <script type="text/javascript" src="js/lz-string.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <title>Tele Medicine</title>
+    </head>
+
+    <body ng-controller="initController" ng-init="init()">
+
+
+
+    <div class="w3-top" ng-show="titleBar" ng-controller="titleBarController">
+    <div class="w3-purple w3-padding-8 w3-large w3-card-4 w3-row-padding w3-animate-opacity">
+        <div class="w3-col s2 w3-center waves-effect waves-light backButton" ng-show="backButton" ng-click="gotoMainScreen()">
+            <i class="material-icons w3-xlarge w3-padding-4">arrow_back</i>
+        </div>
+        <div class="w3-col w3-padding-0" ng-class="backButton == true ? 's6' : 's8'">
+            <div class="w3-padding-small">{{title}}</div>
+        </div>
+        <div class="w3-col s2 w3-center" ng-hide="settings">
+            <i class="material-icons w3-xlarge w3-padding-4">&nbsp;</i>
+        </div>
+        <div class="w3-col s2 w3-center w3-animate-zoom" ng-show="warning" ng-click="emergencyCall()">
+            <i class="material-icons w3-xlarge w3-padding-4 waves-effect waves-light">warning</i>
+        </div>
+        <div class="w3-col s2 w3-center w3-animate-zoom" ng-hide="!settings">
+            <i class="material-icons w3-xlarge w3-padding-4">settings</i>
+        </div>
+        <div class="w3-col s2 w3-center w3-animate-zoom" ng-show="titleCall">
+            <i class="material-icons w3-xlarge w3-padding-4">call</i>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="mainList" ng-show="mainList" ng-controller="mainListController">
+
+    <div class="w3-display-container empty" ng-show="emptyList">
+        <div class="w3-display-middle w3-center">
+            <i class="material-icons w3-text-126 w3-text-light-grey">&#xE0BF;</i>
+            <div class="w3-center w3-text-grey" ng-show="addNew">Start By <i class="material-icons">mode_edit</i> Below</div>
+            <div class="w3-center w3-text-grey" ng-show="!addNew">No Consultations Yet!</div>
+        </div>
+    </div>
+        <!-- spacing due to title bar -->
+        <div class="w3-padding"><div class="w3-padding-8">&nbsp;</div></div>
+        <!-- spacing due to title bar -->   
+        <div class="" ng-show="innerList" ng-repeat="x in listTemp">
+        <div class="w3-row-padding w3-padding-4">
+            <div class="w3-col s8 waves-effect waves-purple" ng-click="gotoChatWindow(x[0].aadhar)">
+                <div class="w3-large w3-text-black">{{ x[0].aadhar | styleAadharFilter}}</div>
+                <div class="w3-medium w3-text-grey">{{ x[0].name }}</div>
+            </div>          
+            <div class="w3-col s2 w3-animate-right waves-effect waves-purple">
+                <div class="w3-padding-4 w3-center" ng-click="callDoctor(x[0].aadhar)">
+                    <i class=" w3-xlarge w3-padding-8 material-icons w3-text-purple">call</i>
+                </div>
+            </div>
+            <div class="w3-col s2 w3-animate-right waves-effect waves-purple">
+                <div class="w3-padding-4">
+                    <i class=" w3-xlarge w3-padding-8 material-icons w3-text-purple">delete_sweep</i>
+                </div>
+            </div> 
+
+        </div>
+                <hr class="w3-border-bottom w3-margin-0 hr" width="80%"/>
+            
+        </div>
+
+        <div class="w3-padding" ng-show="addNewScreen">
+            <div class="w3-animate-right w3-padding-8">
+
+                <div class="input-field">
+                <input id="patAadhar" type="text" class="validate w3-text-purple w3-xxlarge w3-center" ng-model="patAadhar" ng-keypress="styleAadhar(patAadhar)" ng-keyup="checkLengthAadhar(patAadhar)"
+                ng-change="cordovaOnChange(patAadhar)" maxlength="14">
+                <label for="patAadhar">Patient Aadhar Number</label>
+                </div>
+               
+                <div class="input-field">
+                <input id="patName" type="text" placeholder="Patient Name" class="validate w3-text-purple w3-xlarge" ng-model="patName">
+                </div>
+
+  <div class="input-field col s12">
+    <select>
+      <optgroup label="General Physician">
+        <option value="12" name="Doctor 1">Doctor 1</option>
+        <option value="13" name="Doctor 2">Doctor 2</option>
+      </optgroup>
+      <optgroup label="ENT">
+        <option value="14" name="Doctor 3">Doctor 3</option>
+      </optgroup>
+      <optgroup label="Neurologist">
+        <option value="15" name="Doctor 4">Doctor 4</option>
+        <option value="16" name="Doctor 5">Doctor 5</option>
+      </optgroup>
+    </select>
+    <label>Choose Doctor Based on Speciality/Symptoms</label>
+  </div>
+
+
+
+        </div>
+    <div class="waves-effect waves-light btn purple center w3-animate-left" ng-click="sendNewPatient(patAadhar)" ng-disabled="!patAadharValid || !patName"><i class="material-icons">&#xE876;</i> PROCEED</div>
+
+
+
+
+            
+
+        </div>
+
+
+        <div class="w3-bottom w3-padding-16 w3-padding addNew" ng-show="addNew" ng-click="newEntry()">
+            <div class="w3-padding-8 w3-margin-bottom">
+            <a class="btn-floating btn-large waves-effect waves-light purple w3-right w3-animate-zoom"><i class="material-icons">mode_edit</i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="selectCategory animate-hide" ng-hide="!selectCategory">
+        <div class="w3-display-container">
+            <div class="w3-display-middle">
+                <div class="w3-large w3-center w3-padding-8 w3-animate-left" ng-click="gotoRegistration('rmp')">NODAL CENTER</div>
+                <div class="w3-circle w3-card-4 w3-padding w3-padding-16 w3-purple w3-animate-top waves-effect waves-light" ng-click="gotoRegistration('rmp')">
+                    <i class="material-icons w3-text-126 w3-animate-zoom">perm_identity</i>
+                </div>
+
+                <div class="w3-padding w3-border-bottom w3-padding-8"></div>
+                <div class="w3-padding w3-padding-8"></div>
+                 
+                <div class="w3-circle w3-card-4 w3-padding w3-padding-16 w3-purple w3-animate-bottom waves-effect waves-light" ng-click="gotoRegistration('doc')">
+                    <i class="material-icons w3-text-126 w3-animate-zoom">record_voice_over</i>
+                </div>
+                <div class="w3-large w3-center w3-padding-8 w3-animate-right" ng-click="gotoRegistration('doc')">DOCTOR</div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="registration" ng-hide="!registration" ng-controller="registration">
+        <!-- spacing due to title bar -->
+        <div class="w3-padding"><div class="w3-padding-8">&nbsp;</div></div>
+        <!-- spacing due to title bar -->
+        <div class="w3-padding">
+            <input type="hidden" ng-model="category">
+
+            <div class="w3-xlarge w3-center w3-animate-top">Register as {{category == 'doc'?'Doctor':'Nodal Center'}}</div>
+
+            <div class="w3-animate-bottom">
+                <div class="input-field">
+                <input id="mainId" type="text" class="validate w3-text-purple" ng-model="mainId">
+                <label for="mainId">{{category == 'doc'?'Doctor ID':'Nodal Center Name'}}</label>
+                </div>
+
+                <div class="input-field" ng-show="category == 'rmp'">
+                <input id="location" type="text" class="validate w3-text-purple" ng-model="location">
+                <label for="location">Location Name</label>
+                </div>
+
+                <div class="input-field" ng-show="category == 'rmp'">
+                <input id="state" type="text" class="validate w3-text-purple" ng-model="state">
+                <label for="state">State</label>
+                </div>
+
+                <div class="input-field" ng-show="category == 'rmp' || category == 'doc' ">
+                <input id="rmp" type="text" class="validate w3-text-purple" ng-model="rmp">
+                <label for="rmp">{{category == "rmp"?'RMP':''}} Doctor Name</label>
+                </div>
+
+
+<div class="waves-effect waves-light btn purple right w3-animate-left"
+     ng-click="send()"
+     ng-disabled=" (category == 'doc') ? !mainId : !mainId || !location || !state || !rmp ">
+    REGISTER</div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+<div class="chatWindow" ng-show="chatWindow" ng-controller="chatWindowController">
+
+    <input type="hidden" ng-model="patAadharCurrent"/>
+    <!-- spacing due to title bar -->
+    <div class="w3-padding"><div class="w3-padding-8">&nbsp;</div></div>
+    <!-- spacing due to title bar -->   
+
+    <div class="chatWindowInner">
+        <div ng-show="conversation.length == 0?true:false" class="w3-center w3-padding-64">
+            <i class="material-icons w3-jumbo w3-text-light-grey">&#xE0C9;</i>
+            <div class="w3-large"> Talk To Doctor by Typing Below</div>
+        </div>
+        <div ng-repeat="x in conversation" class="conversation" id="chat-{{ ::$index }}" scroll-to-last="chat-{{ ::$index }}">
+            
+        <div class="w3-row w3-padding-4" ng-if=" registrationCat.cat == 'doc' ? 'doc' != x.from : 'doc' == x.from" >
+            <div class="w3-col s10">
+                <div class="w3-pale-blue w3-leftbar w3-border-purple">
+                <div class="w3-padding">
+                    {{x.message}} 
+                </div>
+                <div class="w3-right w3-small">{{x.date | date : "h.mm a"}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="w3-row w3-padding-4" ng-if=" registrationCat.cat == 'doc' ? 'rmp' != x.from : 'rmp' == x.from">
+            <div class="w3-col s2">&nbsp;</div>
+            <div class="w3-col s10">
+                <div class="w3-pale-blue w3-rightbar w3-border-purple">
+                <div class="w3-padding">
+                    {{x.message}} 
+                </div>
+                <div class="w3-left w3-small">{{x.date | date : "h:mm a"}}</div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+    <div class="w3-padding-16">
+        <div class="w3-padding-32"></div>
+    </div>
+
+
+    <div class="w3-bottom">
+
+        <div class="w3-padding-4 w3-row-padding w3-animate-bottom w3-pale-blue w3-bottombar w3-border-purple w3-card-4">
+            <div class="input-field w3-col s10">
+              <textarea class="materialize-textarea w3-padding-0" ng-model="chatMessage"></textarea>
+            </div>
+            <div class="w3-col s2">
+            <div class="w3-padding-8 w3-margin-bottom w3-animate-zoom">
+            <a class="btn-floating btn-large waves-effect waves-light purple w3-right" ng-disabled="!chatMessage" ng-click="sendMessage()"><i class="material-icons">arrow_upward</i></a>
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="callScreen w3-white" ng-animate="callScreen" ng-controller="callScreenController" ng-show="callScreen">
+    <div class="w3-purple w3-padding-64 w3-center w3-animate-top">
+        <div class="w3-large">{{ speciality | styleAadharFilter }}</div>
+        <div class="w3-xxlarge">{{doctor}}</div>
+        <div class="timer w3-medium w3-center" ng-show="callTimer">00:12</div>
+        <div class="speaker w3-center w3-padding-32">
+            <i class="material-icons w3-xxlarge w3-padding w3-circle w3-text-white w3-padding-16 waves-effect waves-light">volume_up</i>
+        </div>
+    </div>
+    <audio class="audioTag" autoplay controls="false" src="{audio}"></audio>
+    <div class="progress purple w3-margin-0">
+      <div class="indeterminate white"></div>
+    </div>
+
+    <div class="w3-bottom">
+        <div class="w3-padding-64 w3-animate-zoom w3-center">
+            <div class="btn-floating btn-large waves-effect waves-light green callAnswer" ng-show="callAnswer" ng-swipe-up="answerCall($event,{id})" ng-swipe-down="callEnd({id})">
+                <i class="material-icons">call</i>
+            </div>
+            <div class="btn-floating btn-large waves-effect waves-light red" ng-click="callEnd({id})" ng-hide="callAnswer">
+                <i class="material-icons">call_end</i>
+            </div>
+            <div class="w3-small w3-text-grey" ng-show="callAnswer">Slide Up to Answer</div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+    <div ng-show="loading" class="loading">
+        <div class="w3-modal w3-padding-0" style="display: block">
+        <div class="w3-modal-content w3-display-container">
+            <div class="w3-display-middle" style="width: 100%">
+                <div class="w3-row-padding white w3-round">
+                <div class=" w3-padding w3-round w3-col s2">
+                 <div class="preloader-wrapper active">
+                    <div class="spinner-layer spinner-blule-only w3-border-purple">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-col s10">
+                    <div class="w3-text-purple w3-padding-8 w3-padding">
+                        <div class="w3-padding-16 w3-padding">Connecting...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+    </body>
+</html>

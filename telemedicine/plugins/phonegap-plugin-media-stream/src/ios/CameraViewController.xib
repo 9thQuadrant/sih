@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController">
+            <connections>
+                <outlet property="bottomBarHeightConstraint" destination="qIF-YH-5Ab" id="CPt-l4-mwR"/>
+                <outlet property="bottomBarView" destination="BZp-h5-AmJ" id="o6j-Ht-ePa"/>
+                <outlet property="cameraContainerView" destination="PPI-1U-rNc" id="JOG-KR-uy6"/>
+                <outlet property="cameraViewBottomConstraint" destination="98F-sk-gP3" id="KHH-SJ-aeK"/>
+                <outlet property="flashButton" destination="Oti-nb-xQ1" id="1l7-eM-I5m"/>
+                <outlet property="switchCamera" destination="Ap0-9j-R4K" id="XZ0-Bw-TxV"/>
+                <outlet property="takePhotoButton" destination="VGJ-Mc-QDp" id="IdV-9r-ukH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PPI-1U-rNc">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="640"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BZp-h5-AmJ">
+                    <rect key="frame" x="0.0" y="640" width="414" height="96"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGJ-Mc-QDp" customClass="JPSCameraButton">
+                            <rect key="frame" x="174" y="15" width="66" height="66"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="66" id="bf4-LR-WSO"/>
+                                <constraint firstAttribute="width" constant="66" id="tpq-lf-gwu"/>
+                            </constraints>
+                            <connections>
+                                <action selector="takePhotoButtonWasTouched:" destination="-1" eventType="touchUpInside" id="LLt-8y-05P"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ap0-9j-R4K">
+                            <rect key="frame" x="340" y="26" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="kNQ-my-0uh"/>
+                            </constraints>
+                            <state key="normal" image="switch-camera"/>
+                            <connections>
+                                <action selector="switchCameraButtonWasTouched:" destination="-1" eventType="touchUpInside" id="6sG-69-wwg"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="Ap0-9j-R4K" firstAttribute="centerY" secondItem="VGJ-Mc-QDp" secondAttribute="centerY" id="JgF-fp-AUF"/>
+                        <constraint firstItem="VGJ-Mc-QDp" firstAttribute="centerX" secondItem="BZp-h5-AmJ" secondAttribute="centerX" id="kia-YU-hQL"/>
+                        <constraint firstAttribute="height" constant="96" id="qIF-YH-5Ab"/>
+                        <constraint firstAttribute="bottom" secondItem="VGJ-Mc-QDp" secondAttribute="bottom" constant="15" id="rBG-dv-9Fu"/>
+                        <constraint firstAttribute="trailing" secondItem="Ap0-9j-R4K" secondAttribute="trailing" constant="30" id="vs6-7o-MO3"/>
+                    </constraints>
+                </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QSv-bd-37z">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <items>
+                        <barButtonItem title="╳" id="WBW-Va-dgH">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="cancelButtonWasTouched:" destination="-1" id="ycH-cB-s0F"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Rzg-mV-Chk"/>
+                        <barButtonItem style="plain" id="Htf-jv-ogh">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Oti-nb-xQ1">
+                                <rect key="frame" x="364" y="7" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="flashButtonWasTouched:" destination="-1" eventType="touchUpInside" id="qgJ-cs-GRw"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </items>
+                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="BZp-h5-AmJ" firstAttribute="top" secondItem="PPI-1U-rNc" secondAttribute="bottom" id="98F-sk-gP3"/>
+                <constraint firstAttribute="trailing" secondItem="PPI-1U-rNc" secondAttribute="trailing" id="Fem-ih-tYa"/>
+                <constraint firstItem="PPI-1U-rNc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="HvJ-Tg-rib"/>
+                <constraint firstAttribute="trailing" secondItem="BZp-h5-AmJ" secondAttribute="trailing" id="JXE-6k-42G"/>
+                <constraint firstItem="BZp-h5-AmJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NfG-nY-aEF"/>
+                <constraint firstItem="PPI-1U-rNc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eig-ov-AOC"/>
+                <constraint firstAttribute="bottom" secondItem="BZp-h5-AmJ" secondAttribute="bottom" id="fB9-gO-CpR"/>
+            </constraints>
+            <point key="canvasLocation" x="-35" y="28"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="switch-camera" width="16" height="16"/>
+    </resources>
+</document>

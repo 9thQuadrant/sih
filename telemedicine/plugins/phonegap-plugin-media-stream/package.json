@@ -1,0 +1,100 @@
+{
+  "_args": [
+    [
+      "https://github.com/phonegap/phonegap-plugin-media-stream.git",
+      "E:\\uac\\sih\\telemedicine"
+    ]
+  ],
+  "_from": "git+https://github.com/phonegap/phonegap-plugin-media-stream.git",
+  "_id": "phonegap-plugin-media-stream@1.2.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/phonegap-plugin-media-stream",
+  "_phantomChildren": {},
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/phonegap/phonegap-plugin-media-stream/master/package.json",
+      "gitUrl": "git://github.com/phonegap/phonegap-plugin-media-stream.git",
+      "httpsUrl": "git+https://github.com/phonegap/phonegap-plugin-media-stream.git",
+      "shortcut": "github:phonegap/phonegap-plugin-media-stream",
+      "ssh": "git@github.com:phonegap/phonegap-plugin-media-stream.git",
+      "sshUrl": "git+ssh://git@github.com/phonegap/phonegap-plugin-media-stream.git",
+      "type": "github"
+    },
+    "name": null,
+    "raw": "https://github.com/phonegap/phonegap-plugin-media-stream.git",
+    "rawSpec": "https://github.com/phonegap/phonegap-plugin-media-stream.git",
+    "scope": null,
+    "spec": "git+https://github.com/phonegap/phonegap-plugin-media-stream.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/phonegap/phonegap-plugin-media-stream.git#6d73cda77995d64b84f45e7287c8cd537341e44d",
+  "_shasum": "aef3d637436d2d4e9476d42c4aac230118a8a190",
+  "_shrinkwrap": null,
+  "_spec": "https://github.com/phonegap/phonegap-plugin-media-stream.git",
+  "_where": "E:\\uac\\sih\\telemedicine",
+  "author": {
+    "name": "Adobe PhoneGap Team"
+  },
+  "bugs": {
+    "url": "https://github.com/phonegap/phonegap-plugin-media-stream/issues"
+  },
+  "cordova": {
+    "id": "phonegap-plugin-media-stream",
+    "platforms": [
+      "ios",
+      "android",
+      "browser"
+    ]
+  },
+  "dependencies": {
+    "eslint": "^4.4.1"
+  },
+  "description": "------------------------",
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "eslint-config-semistandard": "^11.0.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.10.1",
+    "jasmine-node": "^1.14.5",
+    "pluginpub": "^0.0.9"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "1.3.0": {
+        "cordova": ">=7.1.0",
+        "cordova-android": ">=6.3.0"
+      },
+      "<1.3.0": {
+        "cordova": ">=3.0.0"
+      }
+    }
+  },
+  "gitHead": "6d73cda77995d64b84f45e7287c8cd537341e44d",
+  "homepage": "https://github.com/phonegap/phonegap-plugin-media-stream#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "ecosystem:phonegap"
+  ],
+  "license": "Apache-2.0",
+  "name": "phonegap-plugin-media-stream",
+  "optionalDependencies": {},
+  "readme": "# phonegap-plugin-media-stream [![Build Status](https://travis-ci.org/phonegap/phonegap-plugin-media-stream.svg)](https://travis-ci.org/phonegap/phonegap-plugin-media-stream)\r\n------------------------\r\n\r\nThis plugin provides an implementation of the [W3C Media Capture API](https://w3c.github.io/mediacapture-main/) which allows authorized web applications to access streams from the device's audio and video capturing interfaces, i.e. to use the data available from the camera and the microphone. The streams exposed by the API can be bound directly to the HTML <audio> or <video> elements or read and manipulated in the code, including further more specific processing via [Image Capture API](https://w3c.github.io/mediacapture-image/), [Media Recorder API](https://w3c.github.io/mediacapture-record/MediaRecorder.html) or [Real-Time Communication](https://w3c.github.io/webrtc-pc/).\r\n\r\n\r\n## Installation\r\n\r\n    phonegap plugin add phonegap-plugin-media-stream\r\n\r\n    phonegap plugin add https://github.com/phonegap/phonegap-plugin-media-stream.git\r\n\r\n## The `mediaDevices` Object\r\n\r\nThe mediaDevices object has the following methods:\r\n\r\n- [getUserMedia(optional MediaStreamConstraints constraints)](https://github.com/phonegap/phonegap-plugin-media-stream#getusermediaoptional-mediastreamconstraints-constraints)\r\n- [getSupportedConstraints()](https://github.com/phonegap/phonegap-plugin-media-stream#getsupportedconstraints)\r\n\r\n### getUserMedia(optional MediaStreamConstraints constraints)\r\n\r\nThe `getUserMedia` method call prompts the user for permission to capture audio or video input. The method returns a promise that when resolved returns a `MediaStream` object. You can constrain what type of media streams are return by passing in an option `MediaStreamConstraints` object.\r\n\r\n#### Example\r\n\r\n```\r\nnavigator.mediaDevices.getUserMedia({\r\n    'audio': true,\r\n    'video': {\r\n        facingMode: 'user'\r\n    }\r\n}).then(function(mediaStream) {\r\n  // do something with the media stream\r\n});\r\n```\r\n\r\n### getSupportedConstraints()\r\n\r\nThe `getSupportedConstraints` method returns an object which describes which constraints the device supports. You can check the constraints before making a call to `getUserMedia` to make sure that the functionality you want is supported.\r\n\r\n#### Example\r\n\r\n```\r\nvar constraints = navigator.mediaDevices.getSupportedConstraints();\r\nconsole.log(constraints);\r\n```\r\n\r\n## Quirks\r\n\r\nThe iOS implementation that this plugin provides does not allow you to attach the returned `MediaStream` object to a `audio` or `video` tag. Rather you will use the `MeidaStream` object to get a `MediaStreamTrack` to pass to the Image (see [phonegap-plugin-image-capture](https://github.com/phonegap/phonegap-plugin-image-capture)) or Audio capture API.\r\n\r\n## [Contributing](.github/CONTRIBUTING.md)\r\n\r\n## [LICENSE](LICENSE)\r\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phonegap/phonegap-plugin-media-stream.git"
+  },
+  "scripts": {
+    "eslint": "node node_modules/eslint/bin/eslint www && node node_modules/eslint/bin/eslint src && node node_modules/eslint/bin/eslint tests",
+    "test": "npm run eslint && jasmine-node --color spec"
+  },
+  "version": "1.2.1"
+}

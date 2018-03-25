@@ -1,0 +1,4 @@
+#Sun Mar 25 23:25:02 IST 2018
+base.0=E\:\\uac\\sih\\telemedicine\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+renamed.0=classes.dex
+file.0=E\:\\uac\\sih\\telemedicine\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex

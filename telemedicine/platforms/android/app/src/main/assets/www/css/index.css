@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'Segoe UI';
+    src: url(segoeui.ttf);
+}
+html, body {
+	font-family: 'Segoe UI';
+}
+
+.w3-text-126{
+	font-size: 126px!important;
+}
+.selectCategory.ng-hide{
+	left: -100%;
+	-webkit-transition:.3s all;
+}
+.registration {
+	opacity: 1;
+	-webkit-transition: .2s opacity;
+}
+.registration.ng-hide{
+	opacity: 0;
+}
+.selectCategory{
+	left: 0;
+}
+.selectCategory > .w3-display-container ,
+.mainList ,
+.loading .w3-display-container ,
+.empty.w3-display-container,
+.callScreen{
+	height:100vh;
+	background: transparent;
+}
+.addNew{
+	width: fit-content;
+	right: 0;
+}
+.material-icons{
+	opacity: 1;
+	-webkit-animation: opac .5s;
+	vertical-align: middle;
+}
+.chatWindow .materialize-textarea{
+	min-height: 1rem !important;
+	line-height: 1;
+}
+input::selection {
+    color: white; 
+    background: #ff5722;
+}
+.chatWindowInner{
+	height: fit-content;
+	overflow: auto;
+}
+.hr{
+	margin-right: auto !important;
+	margin-left: auto !important;
+}
+.w3-top .w3-row-padding .w3-col:not(:first-child).ng-hide:not(.ng-hide-animate){
+	-webkit-transition: width .3s;
+}
+
+.w3-top .w3-row-padding .w3-col:first-child{
+	-webkit-animation: widthChange ease-in-out .2s;
+}
+.callScreen{
+	z-index: 99999999;
+	position: fixed;
+	height: 100vh;
+	top: 0;
+	width : 100%;
+}
+.callAnswer{
+	-webkit-animation: upAndDown 2s ease-in-out infinite;
+}
+@-webkit-keyframes widthChange{
+	from{
+		width : 0;
+	}
+}
+@-webkit-keyframes upAndDown{
+	0%{
+		transform: translateY(-100%)scale(1.1);
+	}
+	50%{
+		transform: translateY(-30%)scale(1);
+	}
+	100%{
+		transform: translateY(-100%)scale(1.1);
+	}
+}
+.audioTag{
+	display: none;
+}
