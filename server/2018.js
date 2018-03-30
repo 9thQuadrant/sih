@@ -5,12 +5,16 @@ var app = require('http').createServer( (req,res)=>{
 });
 var io = require('socket.io')(app);
 var MongoClient = require('mongodb').MongoClient,mongoDb;
-
+// var PeerServer = require('peer').PeerServer;
+var server = require('peer').PeerServer({port: 9000});
+server.on('connection', (id) => {
+  console.log(id);
+});
 
 MongoClient.connect('mongodb://localhost:27017/', function(err, client) {
   mongoDb = client.db('telemedicine');
-  app.listen(3333);
   console.log("Connected successfully mongodb");
+  app.listen(3333);
 });
 
 var rmpClient = [];
@@ -66,6 +70,7 @@ var reg = io.of('/reg').on('connection', function (socket) {
    });
 /*****************************************************/
 var rmp = io.of('/rmp').on('connection', function (socket) {
+  
 
 	rmpClient[socket.handshake.query.namespace] = socket.id;
 	console.log("rmp connection with id: ",rmpClient.indexOf(socket.id));
@@ -99,10 +104,10 @@ var rmp = io.of('/rmp').on('connection', function (socket) {
     });
 
 
-    socket.on('emergencyCall' , (data) => {
-    	console.log(data , "emergencyCall");
-    	io.socket.broadcast.emit('emergencyCall',data);
-    });
+    // socket.on('emergencyCall' , (data) => {
+    // 	console.log(data , "emergencyCall");
+    // 	io.socket.broadcast.emit('emergencyCall',data);
+    // });
 
 
 });
@@ -110,7 +115,6 @@ var rmp = io.of('/rmp').on('connection', function (socket) {
 var doc = io.of('/doc').on('connection', function (socket) {
 	docClient[socket.handshake.query.namespace] = socket.id;
 	console.log("doc connection with id: ",docClient.indexOf(socket.id));
-
 	socket.on('checkForUnread', (data) => {
 		getUnreadMessages(data.id, (e,data) => {
 			socket.emit('unreadMessages',data);
@@ -140,9 +144,9 @@ var doc = io.of('/doc').on('connection', function (socket) {
     });
 
     
-    socket.on('emergencyCall' , (data) => {
-    	console.log(data , "emergencyCall");
-    	io.socket.broadcast.emit('emergencyCall',data);
-    });
+    // socket.on('emergencyCall' , (data) => {
+    // 	console.log(data , "emergencyCall");
+    // 	io.socket.broadcast.emit('emergencyCall',data);
+    // });
 	
 });

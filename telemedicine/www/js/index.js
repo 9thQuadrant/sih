@@ -1,24 +1,25 @@
+var peer;
 var initial = angular
                 .module('teleMed', ['ngRoute','btford.socket-io','swipe'])
                 .factory('socket',  (socketFactory) => {
-
-
                     try{
+                        host = '192.168.1.2';
                         registrationCat = JSON.parse(localStorage.reg);
                         if(registrationCat.cat == 'doc')
-                            var ioSocket = io('http://192.168.2.6:3333/doc?namespace='+registrationCat.id);
+                            var ioSocket = io('http://'+host+':3333/doc?namespace='+registrationCat.id),
+                                peer = new Peer(registrationCat.id,{host:host,port:9000});
                         else if(registrationCat.cat == 'rmp')
-                            var ioSocket = io('http://192.168.2.6:3333/rmp?namespace='+registrationCat.id);
+                            var ioSocket = io('http://'+host+':3333/rmp?namespace='+registrationCat.id),
+                                peer = new Peer(registrationCat.id,{host:host,port:9000});
                     }
                     catch(e){
-                        var ioSocket = io('http://192.168.0.105:3333/reg');
+                        var ioSocket = io('http://'+host+':3333/reg');
                     }
 
                     return socketFactory({
 
                         prefix: '',
                         ioSocket: ioSocket,
-
                     });
 
                 })
@@ -103,11 +104,17 @@ initial.controller('initController', ($scope, $rootScope,$timeout ,socket) => {
             $rootScope.$emit('callScreenControllerCallEnd' , data);
         });
 
-        socket.on('audioStream',(data)=> {
-            console.log(data);
-            console.log(window.URL.createObjectURL(data.stream));
-            $rootScope.$emit('callScreenControllerAudioStream',window.URL.createObjectURL(data.stream));
-        });
+        // peer.on('call', function(call) {
+        //     navigator.mediaDevices.getUserMedia({
+        //         'audio': true,
+        //         'video': false
+        //     }).then( (audioStream) =>{
+        //         call.answer(audioStream);
+        //         call.on('stream',(stream)=>{
+        //             $rootScope.audio = window.createObjectURL(stream);
+        //         });
+        //     }); 
+        // });
 
 
         socket.on('receiveMessage', (messageData) =>{
@@ -469,9 +476,8 @@ initial.controller('callScreenController', ($scope, $rootScope, $http ,$timeout 
             'audio': true,
             'video': false
         }).then( (audioStream) =>{
-            //audioStream = new webkitMediaStream(audioStream);
-            console.log(window.URL.createObjectURL(audioStream));
-
+            peer.connect(id);
+            peer.call(id,audioStream);
         }).catch(e => {
             console.log(e);
         });
